@@ -33,7 +33,7 @@ function MapView2() {
   return (
     <>
      { center &&  <LoadScript googleMapsApiKey="AIzaSyDp8w5DnETDxDe_gfjtOp9fbWyQhXkSnUU">
-        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={20}>
+        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={17}>
           {/* Add your map markers and other components here */}
           <MarkerF position={center} />
         </GoogleMap>
