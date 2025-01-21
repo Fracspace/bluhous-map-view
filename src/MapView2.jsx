@@ -1,29 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { GoogleMap, LoadScript ,Marker,MarkerF} from "@react-google-maps/api";
 
 const containerStyle = {
   width: "100%",
   height: "400px"
 };
 
-const center = {
-  lat: 40.7128,
-  lng: -74.006
-};
-
-const staticMapUrl =
-"https://maps.googleapis.com/maps/api/staticmap?center=30.7333,76.7794&zoom=13&size=600x300&key=AIzaSyDp8w5DnETDxDe_gfjtOp9fbWyQhXkSnUU";
-
 function MapView2() {
+  // State to store latitude and longitude
+  const [center, setCenter] = useState({lat: 15.5567136, lng: 73.7594859999999});
+
+  // Function to parse query parameters
+  const getQueryParams = () => {
+    const params = new URLSearchParams(window.location.search);
+    const lat = parseFloat(params.get("lat"));
+    const lng = parseFloat(params.get("lng"));
+    return { lat, lng };
+  };
+
+  useEffect(() => {
+    // Parse the query params on load and set the map center
+    const { lat, lng } = getQueryParams();
+   
+    if (!isNaN(lat) && !isNaN(lng)) {
+      setCenter({ lat, lng });
+    }
+
+    console.log("lat and long is",lat,lng,center)
+  }, []);
+
   return (
     <>
-     <img src={staticMapUrl} alt="Static Map" />
-    <LoadScript googleMapsApiKey="AIzaSyDp8w5DnETDxDe_gfjtOp9fbWyQhXkSnUU">
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15}>
-        {/* Add your map markers and other components here */}
-      </GoogleMap>
-    </LoadScript>
+     { center &&  <LoadScript googleMapsApiKey="AIzaSyDp8w5DnETDxDe_gfjtOp9fbWyQhXkSnUU">
+        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={20}>
+          {/* Add your map markers and other components here */}
+          <MarkerF position={center} />
+        </GoogleMap>
+      </LoadScript>}
     </>
   );
 }
